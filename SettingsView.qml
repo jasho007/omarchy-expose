@@ -582,6 +582,7 @@ Item {
         if (settingsView.controller.settingsCategoryIndex === 2)
             return settingsView.availableFocusItems([
                 categoryButton,
+                defaultScopeChoices,
                 previewPlacementChoices,
                 windowFooterChoices,
                 movePointerToggle,
@@ -1020,6 +1021,31 @@ Item {
                             }
 
                             Item { Layout.preferredHeight: Style.spacing.sm }
+                            SettingsDivider { Layout.fillWidth: true }
+
+                            RowLayout {
+                                Layout.fillWidth: true
+                                Layout.preferredHeight: Style.space(48)
+                                Text {
+                                    Layout.preferredWidth: Style.space(120)
+                                    text: "Show"
+                                    textFormat: Text.PlainText
+                                    color: Color.menu.text
+                                    font.family: Style.font.menuFamily
+                                    font.pixelSize: Style.font.body
+                                }
+                                Item { Layout.fillWidth: true }
+                                SettingChoices {
+                                    id: defaultScopeChoices
+                                    value: settingsView.controller.defaultWorkspaceScope
+                                    options: [
+                                        { label: "All workspaces", value: "all" },
+                                        { label: "Current workspace", value: "current" }
+                                    ]
+                                    onChosen: function (value) { settingsView.controller.setDefaultWorkspaceScope(value); }
+                                }
+                            }
+
                             SettingsDivider { Layout.fillWidth: true }
 
                             RowLayout {

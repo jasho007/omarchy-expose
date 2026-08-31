@@ -128,12 +128,15 @@ Item {
     readonly property string multiMonitorMode: root.pluginEntry && root.pluginEntry.multiMonitorMode === "per-monitor"
         ? "per-monitor"
         : "mirrored"
+    readonly property string defaultWorkspaceScope: root.pluginEntry && root.pluginEntry.defaultWorkspaceScope === "current"
+        ? "current"
+        : "all"
     readonly property bool showFooter: !root.pluginEntry || root.pluginEntry.showFooter !== false
     property bool opened: false
     property bool surfaceMounted: false
     property bool hotCornerArmed: true
     property string filterText: ""
-    property string workspaceScope: "all"
+    property string workspaceScope: root.defaultWorkspaceScope
     property int selectedIndex: 0
     property int hoveredIndex: -1
     property int previewIndex: -1
@@ -243,7 +246,7 @@ Item {
             root.backgroundBlurReleasePhase = 0;
         root.closeSettings();
         root.filterText = "";
-        root.workspaceScope = "all";
+        root.workspaceScope = root.defaultWorkspaceScope;
         root.dismissNotifyShell = false;
         if (root.surfaceMounted) {
             if (blurRestoreInFlight) {
@@ -648,6 +651,13 @@ Item {
         var mode = value === "per-monitor" ? "per-monitor" : "mirrored";
         if (mode !== root.multiMonitorMode)
             root.updatePluginSetting("multiMonitorMode", mode);
+    }
+
+    function setDefaultWorkspaceScope(value) {
+        var scope = value === "current" ? "current" : "all";
+        if (scope !== root.defaultWorkspaceScope)
+            root.updatePluginSetting("defaultWorkspaceScope", scope);
+        root.setWorkspaceScope(scope);
     }
 
     function requestFooterHide() {
@@ -1643,6 +1653,12 @@ Item {
                 return "expected mirrored or per-monitor";
             root.setMultiMonitorMode(mode);
             return mode;
+        }
+        function defaultWorkspaceScope(scope: string): string {
+            if (scope !== "all" && scope !== "current")
+                return "expected all or current";
+            root.setDefaultWorkspaceScope(scope);
+            return scope;
         }
     }
 
