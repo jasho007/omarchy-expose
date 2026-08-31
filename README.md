@@ -9,7 +9,7 @@ macOS-style Exposé for Omarchy: one key or a hot corner shows every open window
 - **Live previews.** Cards are real screencopy views, so videos keep playing and terminals keep scrolling. The Omarchy desktop behind the grid stays live too.
 - **Quick Look.** Space enlarges any preview and restores it again. Shift+Space does it in slow motion, like the classic macOS Easter egg.
 - **Search.** Just start typing to filter windows by title or application.
-- **Workspace scope.** Press Tab to switch between every window and windows on the current workspace. Per-monitor mode evaluates the current workspace of the selected display.
+- **Workspace scope.** Press Tab to switch between every window and windows on the current workspace. Set which scope Exposé opens with under Settings → Windows → Show. Per-monitor mode evaluates the current workspace of the selected display.
 - **Multi-monitor layouts.** The overview opens only on the focused display (or the display whose hot corner was used). Same overview shows every window there; per monitor keeps that display's own windows.
 - **Built for Omarchy.** Runs inside Omarchy Shell, follows the active theme, and adds no packages, services, or daemons.
 - **Hot corner.** Toggle the overview by flinging the pointer into a corner (on by default, any corner, can be disabled).
@@ -97,6 +97,7 @@ Open **Settings** from the footer while the overview is open. It is fully keyboa
 - Window footer style: floating, integrated, overlay, or centered
 - Multiple displays: Same overview (all windows together on the selected display) or Per monitor (only that display's windows)
 - Bottom text visibility. Hiding it requires confirmation and removes the Settings link
+- Default workspace scope: all windows, or only the current workspace
 - Hot corner on/off and position (disable the same corner in other hot-corner plugins to avoid overlap)
 - Move cursor to the activated window on/off
 
@@ -114,6 +115,7 @@ omarchy-shell expose slideDirectionIn left       # separate opening side, also s
 omarchy-shell expose slideDirectionOut right     # separate closing side, also splits slide timing
 omarchy-shell expose backgroundBlur 4            # 0-20
 omarchy-shell expose backgroundDim 6             # 0-90
+omarchy-shell expose defaultWorkspaceScope all   # all | current, scope Exposé opens with
 omarchy-shell expose previewPlacement in-place   # in-place | centered
 omarchy-shell expose windowFooterStyle floating  # floating | integrated | overlay | centered
 omarchy-shell expose multiMonitorMode mirrored   # mirrored | per-monitor
