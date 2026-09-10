@@ -3,14 +3,17 @@
   "id": "expose.window-overview",
   "name": "Exposé",
   "version": "4.2.0",
-  "author": "Kristoffer Risanger (@kristofferR)",
+  "author": "jasho007",
   "license": "MIT",
   "description": "macOS-style Exposé for Omarchy: one key or a hot corner shows every open window as a live preview. Type to search, press Space to Quick Look, press Enter to launch.",
   "icon": "assets/icon.svg",
   "preview": "preview.png",
-  "kinds": ["overlay"],
+  "kinds": [
+    "overlay"
+  ],
   "keepLoaded": true,
   "entryPoints": {
     "overlay": "Overview.qml"
-  }
+  },
+  "repository": "https://github.com/jasho007/omarchy-expose"
 }
