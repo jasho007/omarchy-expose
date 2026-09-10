@@ -16,8 +16,24 @@ Item {
     readonly property string pluginId: String((root.manifest && root.manifest.id) || "expose.window-overview")
     readonly property string pluginDir: String((root.manifest && root.manifest.__sourceDir)
         || (Quickshell.env("HOME") + "/.config/omarchy/plugins/" + root.pluginId))
+    // Third-party plugins receive PluginShellApi as `shell`, which exposes
+    // updateEntryInline() but no `shellConfig` to read back from, so settings
+    // written to disk were never reflected in the UI. Fall back to reading
+    // shell.json directly; first-party hosting still wins when it is available.
+    property string shellConfigText: ""
+    readonly property var shellConfigFallback: {
+        if (!root.shellConfigText)
+            return null;
+        try {
+            return JSON.parse(root.shellConfigText);
+        } catch (e) {
+            return null;
+        }
+    }
     readonly property var pluginEntry: {
-        var config = root.shell && root.shell.shellConfig ? root.shell.shellConfig : null;
+        var config = root.shell && root.shell.shellConfig
+            ? root.shell.shellConfig
+            : root.shellConfigFallback;
         var plugins = config && Array.isArray(config.plugins) ? config.plugins : [];
         for (var i = 0; i < plugins.length; i++)
             if (plugins[i] && String(plugins[i].id || "") === root.pluginId)
@@ -1451,6 +1467,17 @@ Item {
             if (!root.hotCornerHovered())
                 root.hotCornerArmed = true;
         }
+    }
+
+    // Mirrors the host's own FileView pattern in shell.qml: watch the user
+    // config and reload on change so a write lands back in the bindings.
+    FileView {
+        id: shellConfigFile
+        path: Quickshell.env("HOME") + "/.config/omarchy/shell.json"
+        watchChanges: true
+        printErrors: false
+        onLoaded: root.shellConfigText = text()
+        onFileChanged: reload()
     }
 
     Process {
